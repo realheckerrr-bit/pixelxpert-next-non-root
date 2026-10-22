@@ -1,0 +1,93 @@
+name: Build Non-Root Signed APK & Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Signed Non-Root APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Executable Permissions to Gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Prepare Signed APK Asset
+        run: |
+          mkdir -p release-artifacts
+          APK_FILE=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            echo "Error: No APK found!"
+            exit 1
+          fi
+          echo "Found APK: $APK_FILE"
+          cp "$APK_FILE" release-artifacts/PixelXpert-Next-NonRoot.apk
+          cd release-artifacts
+          sha256sum PixelXpert-Next-NonRoot.apk > PixelXpert-Next-NonRoot.apk.sha256
+          ls -la
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PixelXpert-Next-NonRoot-Signed-APK
+          path: release-artifacts/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0-non-root
+          name: "PixelXpert-Next Non-Root v1.0.0"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ### ⚡ PixelXpert-Next Non-Root & Wireless ADB Edition
+
+            Standalone signed APK ported to run **without root** across **Google Pixel devices from Android 13 to Android 17**.
+
+            #### 🌟 Features:
+            - **No Root Required**: Powered by Wireless ADB, Shizuku, and LSPatch support.
+            - **Status Bar Icon Manager**: Live toggle system icons (Wi-Fi, Cellular, Battery, Clock, Bluetooth, Alarm, Volume, Zen) via `icon_blacklist`.
+            - **Refresh Rate Control**: Lock display refresh rate (60Hz, 90Hz, 120Hz).
+            - **Animation Scales**: Configure system animation speeds (0x, 0.25x, 0.5x, 1x).
+            - **Back Navigation Inset Scales**: Fine-tune gesture navigation sensitivity.
+            - **SystemUI Restart via ADB**: Cleanly restart SystemUI without root or reboot.
+            - **Wide Compatibility**: Supports Android 13 (API 33), 14 (API 34), 15 (API 35), 16 (API 36), and 17 (API 37).
+            - **Signed APK**: Installs directly on device without signature verification errors.
+
+            #### 📲 Installation & Quick Setup:
+            1. Download and install `PixelXpert-Next-NonRoot.apk` on your Pixel.
+            2. Open **Wireless ADB** or connect to a PC, then run:
+               ```sh
+               adb shell pm grant sh.anirudhgupta109.pxn android.permission.WRITE_SECURE_SETTINGS
+               ```
+               *(Or simply tap "Authorize" if you use Shizuku!)*
+            3. Enjoy full non-root customization!
+          files: |
+            release-artifacts/PixelXpert-Next-NonRoot.apk
+            release-artifacts/PixelXpert-Next-NonRoot.apk.sha256

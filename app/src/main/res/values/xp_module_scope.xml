@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--
+	  Packages the Hooks page monitors, mirroring legacy
+	  values/xp_module_scope.xml. The Xposed side reads the same list, so the
+	  order and names are a contract rather than a UI detail.
+
+	  root_requirement is the subset that needs root to inspect.
+	-->
+	<string-array name="module_scope">
+		<item>com.android.systemui</item> <!-- systemUI -->
+		<item>com.google.android.apps.nexuslauncher</item> <!-- Pixel Launcher - Taskbar -->
+		<item>android</item> <!-- System Framework -->
+		<item>com.android.settings</item> <!-- settings app -->
+		<item>com.google.android.dialer</item> <!-- google dialer -->
+		<item>me.weishu.kernelsu</item> <!-- KSU Manager -->
+		<item>com.rifsxd.ksunext</item> <!-- KSU Next Manager -->
+	</string-array>
+	<string-array name="root_requirement">
+		<item>com.android.systemui</item> <!-- systemUI -->
+		<item>com.google.android.apps.nexuslauncher</item> <!-- Pixel Launcher - Taskbar -->
+	</string-array>
+</resources>

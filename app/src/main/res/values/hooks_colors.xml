@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Hooks-page row states, matching legacy values/colors.xml exactly. -->
+	<color name="error">#DA000E</color>
+	<color name="success">#008753</color>
+</resources>

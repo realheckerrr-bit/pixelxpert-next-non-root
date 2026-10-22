@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission
+		android:name="android.permission.QUERY_ALL_PACKAGES"
+		tools:ignore="QueryAllPackagesPermission" />
+	<uses-permission
+		android:name="android.permission.WRITE_SECURE_SETTINGS"
+		tools:ignore="ProtectedPermissions" />
+	<uses-permission
+		android:name="android.permission.WRITE_SETTINGS"
+		tools:ignore="ProtectedPermissions" />
+	<uses-permission
+		android:name="android.permission.DUMP"
+		tools:ignore="ProtectedPermissions" />
+	<uses-permission
+		android:name="android.permission.PACKAGE_USAGE_STATS"
+		tools:ignore="ProtectedPermissions" />
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
+
+	<application
+		android:name=".PxnApp"
+		android:enableOnBackInvokedCallback="true"
+		android:forceQueryable="true"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:supportsRtl="true"
+		android:theme="@style/Theme.PXN">
+
+		<!-- Shizuku provider for non-root privileged wireless ADB access -->
+		<provider
+			android:name="rikka.shizuku.ShizukuProvider"
+			android:authorities="${applicationId}.shizuku"
+			android:multiprocess="false"
+			android:enabled="true"
+			android:exported="true"
+			android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+		<!-- Two-stage entry, mirroring legacy: a FakeSplashActivity owns the
+		     Theme.SplashScreen system splash and immediately hands off to
+		     SplashActivity, which uses a plain theme so its check screen draws
+		     the instant it starts instead of sitting under a splash overlay.
+		     Folding the two into one activity hides the spinners, because both
+		     checks finish while the system splash is still up.
+		     No intent-filter on either: legacy gives its FakeSplashActivity
+		     none either, and puts the launcher entry on two activity-aliases so
+		     the icon can be swapped by toggling which alias is enabled. -->
+		<activity
+			android:name=".FakeSplashActivity"
+			android:exported="true"
+			android:label="@string/app_name"
+			android:theme="@style/Theme.PXN.Splash" />
+
+		<activity
+			android:name=".SplashActivity"
+			android:exported="true"
+			android:label="@string/app_name"
+			android:theme="@style/Theme.PXN" />
+
+		<activity-alias
+			android:name=".SplashActivityAlternateIcon"
+			android:enabled="false"
+			android:exported="true"
+			android:icon="@mipmap/ic_launcher_themed"
+			android:label="@string/app_name"
+			android:targetActivity=".FakeSplashActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+			</intent-filter>
+		</activity-alias>
+
+		<activity-alias
+			android:name=".SplashActivityNormalIcon"
+			android:enabled="true"
+			android:exported="true"
+			android:icon="@mipmap/ic_launcher"
+			android:label="@string/app_name"
+			android:targetActivity=".FakeSplashActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+			</intent-filter>
+		</activity-alias>
+
+		<activity
+			android:name=".MainActivity"
+			android:exported="true"
+			android:label="@string/app_name"
+			android:theme="@style/Theme.PXN">
+			<!-- Same filter legacy declares on SettingsActivity: it is what an
+			     implicit ACTION_RUN resolves to, alongside the explicit
+			     component the update notification uses. -->
+			<intent-filter>
+				<action android:name="android.intent.action.RUN" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
+		<!-- RootProvider is deliberately NOT declared here. libsu's
+		     com.topjohnwu.superuser.ipc.RootService extends
+		     android.content.ContextWrapper, not android.app.Service: it is
+		     spawned as a root process and bound through libsu's own IPC, never
+		     through ActivityManagerService. Declaring it as a <service> would
+		     advertise a component the system cannot instantiate (and legacy
+		     declares nothing either); Android's bindService is not on this
+		     path. -->
+
+		<!-- AutoUpdate's two halves, now ported. Boot re-registers the periodic
+		     check, because unique work is only enqueued when the switch is
+		     touched; the action handler is the notification's "Skip this
+		     update". Both are exported as legacy declares them - BOOT_COMPLETED
+		     is a protected broadcast only the system can send, and the second
+		     is reached through an explicit component from our own notification
+		     (exported="false" would serve equally, but legacy exports it and
+		     suppresses the lint warning to say so). -->
+		<receiver
+			android:name=".receivers.BootReceiver"
+			android:directBootAware="true"
+			android:enabled="true"
+			android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+
+		<receiver
+			android:name=".receivers.NotificationActionHandler"
+			android:exported="true"
+			tools:ignore="ExportedReceiver" />
+
+		<!-- Quick Settings tiles, in legacy's order. Each class is a manifest
+		     entry point only: SystemUI binds it by name, and the matching
+		     modpack (VolumeTile / CaffeineTile / HighBrightnessFlashlightTile)
+		     intercepts the callbacks to do the real work inside the hooked
+		     process. Legacy declares no ACTIVE_TILE or TOGGLEABLE_TILE
+		     meta-data on any of these three, so there is none here either. -->
+		<service
+			android:name=".service.tileServices.VolumeTileService"
+			android:exported="true"
+			android:icon="@drawable/ic_volume"
+			android:label="@string/volume_tile_title"
+			android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+			<intent-filter>
+				<action android:name="android.service.quicksettings.action.QS_TILE" />
+			</intent-filter>
+		</service>
+		<service
+			android:name=".service.tileServices.CaffeineTileService"
+			android:exported="true"
+			android:icon="@drawable/ic_qs_caffeine"
+			android:label="@string/caffeine_tile_title"
+			android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+			<intent-filter>
+				<action android:name="android.service.quicksettings.action.QS_TILE" />
+			</intent-filter>
+		</service>
+		<service
+			android:name=".service.tileServices.HighBrightnessFlashlightTileService"
+			android:exported="true"
+			android:icon="@drawable/ic_qs_flashlight"
+			android:label="@string/high_brightness_flashlight_tile_title"
+			android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+			<intent-filter>
+				<action android:name="android.service.quicksettings.action.QS_TILE" />
+			</intent-filter>
+		</service>
+
+		<!-- Root proxy the Xposed side binds: XPLauncher.connectRootService
+		     targets ComponentName(APPLICATION_ID, PixelXpertProxy) for any hooked
+		     package listed in R.array.root_requirement (SystemUI and the
+		     launcher), so this must be exported for a foreign UID to bind it.
+		     The class exists now, which is what the earlier deferral waited for. -->
+		<service
+			android:name=".service.PixelXpertProxy"
+			android:exported="true"
+			tools:ignore="ExportedService" />
+
+		<!-- Serves FILE_NAME to the hooked processes. The authority has to equal
+		     REMOTE_PREF_AUTHORITY (BuildConfig.APPLICATION_ID) exactly - the Xposed
+		     side opens it as APPLICATION_ID, and a mismatch leaves
+		     XPLauncher.waitForXprefsLoad spinning forever. directBootAware and
+		     exported mirror legacy. -->
+		<provider
+			android:name=".data.RemotePrefProvider"
+			android:authorities="${applicationId}"
+			android:directBootAware="true"
+			android:exported="true"
+			tools:ignore="ExportedContentProvider" />
+
+		<provider
+			android:name="androidx.core.content.FileProvider"
+			android:authorities="${applicationId}.fileprovider"
+			android:exported="false"
+			android:grantUriPermissions="true">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/file_paths" />
+		</provider>
+	</application>
+</manifest>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material Design "brightness_auto", the glyph Settings uses for adaptive brightness. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+	android:width="24.0dp"
+	android:height="24.0dp"
+	android:viewportWidth="24"
+	android:viewportHeight="24">
+
+	<path
+		android:fillColor="@android:color/white"
+		android:fillType="evenOdd"
+		android:pathData="M20,8.69V4h-4.69L12,0.69L8.69,4H4v4.69L0.69,12L4,15.31V20h4.69L12,23.31L15.31,20H20v-4.69L23.31,12L20,8.69zM11,7h2l3.2,9h-1.9l-0.7,-2h-3.2l-0.7,2H7.8L11,7zM10.85,12.65h2.3L12,9L10.85,12.65z" />
+</vector>
