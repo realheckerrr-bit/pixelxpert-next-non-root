@@ -36,6 +36,7 @@ val own_prefs_header: PrefScreen = PrefScreen(
 	title = R.string.settings_about_section_title,
 	ignore = true,
 	children = listOf(
+				ActionRow(key = "Authors", title = R.string.authors_title, summary = R.string.authors_summary, icon = R.drawable.ic_github),
 				ActionRow(key = "GitHubRepo", title = R.string.github_repo_title, summary = R.string.github_repo_summary, icon = R.drawable.ic_github),
 				ActionRow(key = "TelegramGroup", title = R.string.telegram_group_title, summary = R.string.telegram_group_summary, icon = R.drawable.ic_telegram),
 				ActionRow(key = "CrowdinProject", title = R.string.crowdin_title, summary = R.string.crowdin_summary, icon = R.drawable.ic_crowdin),

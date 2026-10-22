@@ -42,7 +42,9 @@
     <string name="update_over_wifi_title">Check updates over WiFi only</string>
     <string name="update_over_wifi_summary">Check for updates in background only when connected to wifi</string>
     <string name="github_repo_title">GitHub repository</string>
-    <string name="github_repo_summary" translatable="false">anirudhgupta109/PixelXpert-Next</string>
+    <string name="github_repo_summary" translatable="false">realheckerrr-bit/pixelxpert-next-non-root</string>
+    <string name="authors_title">Authors</string>
+    <string name="authors_summary" translatable="false">realheckerrr-bit (Non-Root Mod &amp; Maintainer)</string>
     <string name="telegram_group_title">Telegram channel</string>
     <string name="telegram_group_summary" translatable="false">\@PixelXpert-Next_Github</string>
     <string name="usage_title">Usage</string>

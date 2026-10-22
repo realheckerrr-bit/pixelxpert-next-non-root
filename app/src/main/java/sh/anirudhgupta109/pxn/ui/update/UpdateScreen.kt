@@ -76,9 +76,9 @@ import sh.anirudhgupta109.pxn.util.Restarter
 
 /** Release channel manifests, one per channel. */
 private const val STABLE_UPDATES_URL =
-	"https://raw.githubusercontent.com/anirudhgupta109/PixelXpert-Next/px_files/latestStable.json"
+	"https://raw.githubusercontent.com/realheckerrr-bit/pixelxpert-next-non-root/main/updates/latestStable.json"
 private const val CANARY_UPDATES_URL =
-	"https://raw.githubusercontent.com/anirudhgupta109/PixelXpert-Next/px_files/latestCanary.json"
+	"https://raw.githubusercontent.com/realheckerrr-bit/pixelxpert-next-non-root/main/updates/latestCanary.json"
 
 /**
  * Taps on the installed-version line that open the hidden update-source box.

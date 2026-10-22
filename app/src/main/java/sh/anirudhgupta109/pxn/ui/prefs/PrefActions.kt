@@ -19,7 +19,8 @@ import sh.anirudhgupta109.pxn.util.NTPTimeSyncer
  * the renderer dispatches to by key.
  */
 internal val externalLinks: Map<String, String> = mapOf(
-	"GitHubRepo" to "https://github.com/anirudhgupta109/PixelXpert-Next",
+	"Authors" to "https://github.com/realheckerrr-bit",
+	"GitHubRepo" to "https://github.com/realheckerrr-bit/pixelxpert-next-non-root",
 	"TelegramGroup" to "https://t.me/PixelXpert_Github",
 	"CrowdinProject" to "https://pixelxpert.siava.sh/translate",
 	"UsageWiki" to "https://pixelxpert.siava.sh/wiki",
