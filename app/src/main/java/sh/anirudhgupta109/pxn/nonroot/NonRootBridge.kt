@@ -74,7 +74,13 @@ object NonRootBridge {
 		// Try Shizuku first if authorized
 		if (hasShizukuPermission()) {
 			try {
-				val process = Shizuku.newProcess(arrayOf("sh", "-c", command), null, null)
+				val newProcessMethod = Shizuku::class.java.getMethod(
+					"newProcess",
+					Array<String>::class.java,
+					Array<String>::class.java,
+					String::class.java,
+				)
+				val process = newProcessMethod.invoke(null, arrayOf("sh", "-c", command), null, null) as Process
 				val output = BufferedReader(InputStreamReader(process.inputStream)).use { it.readText() }
 				val exitCode = process.waitFor()
 				if (exitCode == 0) return true to output.trim()
