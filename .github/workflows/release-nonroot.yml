@@ -64,7 +64,7 @@ jobs:
           name: "PixelXpert-Next Non-Root v1.0.0"
           draft: false
           prerelease: false
-          generate_release_notes: true
+          make_latest: true
           body: |
             ### ⚡ PixelXpert-Next Non-Root & Wireless ADB Edition
 
