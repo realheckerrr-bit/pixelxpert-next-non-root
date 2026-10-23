@@ -405,6 +405,79 @@ fun NonRootScreen() {
 			}
 		}
 
+		// Bootleggers Style Block Header (Non-Root / ADB & LSPatch)
+		item {
+			Text(
+				text = "BOOTLEGGERS STYLE QS BLOCK HEADER",
+				style = MaterialTheme.typography.labelMedium,
+				color = MaterialTheme.colorScheme.primary,
+				fontWeight = FontWeight.SemiBold,
+			)
+			Spacer(modifier = Modifier.height(8.dp))
+
+			Card(
+				colors = CardDefaults.cardColors(
+					containerColor = MaterialTheme.colorScheme.surface,
+				),
+				shape = RoundedCornerShape(16.dp),
+				modifier = Modifier.fillMaxWidth(),
+			) {
+				Column(modifier = Modifier.padding(16.dp)) {
+					Text(
+						text = "Block Header Preview & Style",
+						style = MaterialTheme.typography.titleSmall,
+						fontWeight = FontWeight.Bold,
+					)
+					Spacer(modifier = Modifier.height(8.dp))
+					Text(
+						text = "Styled QS header card inspired by Bootleggers ROM with custom titles, pill rounding, and accent borders.",
+						style = MaterialTheme.typography.bodySmall,
+						color = MaterialTheme.colorScheme.onSurfaceVariant,
+					)
+					Spacer(modifier = Modifier.height(12.dp))
+
+					// Live Preview of Bootleggers Block Header
+					Box(
+						modifier = Modifier
+							.fillMaxWidth()
+							.background(
+								color = MaterialTheme.colorScheme.surfaceVariant,
+								shape = RoundedCornerShape(16.dp)
+							)
+							.padding(16.dp),
+					) {
+						Column(
+							horizontalAlignment = Alignment.CenterHorizontally,
+							modifier = Modifier.fillMaxWidth()
+						) {
+							Box(
+								modifier = Modifier
+									.background(
+										color = MaterialTheme.colorScheme.primary.copy(alpha = 0.85f),
+										shape = RoundedCornerShape(12.dp)
+									)
+									.padding(horizontal = 20.dp, vertical = 8.dp)
+							) {
+								Text(
+									text = "★ BOOTLEGGERS ★",
+									color = MaterialTheme.colorScheme.onPrimary,
+									fontWeight = FontWeight.Black,
+									letterSpacing = androidx.compose.ui.unit.sp(1.5f),
+									style = MaterialTheme.typography.titleMedium,
+								)
+							}
+							Spacer(modifier = Modifier.height(8.dp))
+							Text(
+								text = "Non-Root & LSPatch Ready (Pixels A13 - A17)",
+								style = MaterialTheme.typography.labelSmall,
+								color = MaterialTheme.colorScheme.onSurfaceVariant,
+							)
+						}
+					}
+				}
+			}
+		}
+
 		// Actions & SystemUI Control
 		item {
 			Text(

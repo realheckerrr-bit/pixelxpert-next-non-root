@@ -629,6 +629,17 @@
     <string name="QS_auto_brightness_title">Adaptive brightness shortcut</string>
     <string name="QS_auto_brightness_desc">Add a toggle for adaptive brightness next to the brightness slider</string>
 
+    <!-- Bootleggers ROM Style QS Header -->
+    <string name="qs_header_category_title">Quick Settings Header (Bootleggers Style)</string>
+    <string name="qs_block_header_title">Bootleggers Block Header</string>
+    <string name="qs_block_header_summary">Display a stylized block header with custom text, rounded container, and accent tint in QS shade</string>
+    <string name="qs_block_header_text_title">Header Title Text</string>
+    <string name="qs_block_header_text_summary">Custom text to show in the block header title (Default: Bootleggers / Custom)</string>
+    <string name="qs_block_header_style_title">Block Header Style</string>
+    <string name="qs_block_header_style_summary">Choose accent background, translucent pill, or solid card</string>
+    <string name="qs_block_header_radius_title">Block Corner Radius</string>
+    <string name="qs_block_header_radius_summary">Corner rounding for the header block</string>
+
     <!--Hook Audit Screen-->
     <string name="hook_audit_title">Hook Audit &amp; Diagnostics</string>
     <string name="hook_audit_export">Export Report</string>

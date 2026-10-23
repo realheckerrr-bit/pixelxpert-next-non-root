@@ -1,5 +1,19 @@
 <resources>
 
+	<string-array name="qs_block_header_style_entries">
+		<item>Bootleggers Accent Fill</item>
+		<item>Translucent Glass</item>
+		<item>Solid Surface Card</item>
+		<item>Cyber Outline</item>
+	</string-array>
+
+	<string-array name="qs_block_header_style_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+	</string-array>
+
     <string-array name="qs_pulldown_side_names">
 		<item>@string/pull_down_left</item>
 		<item>@string/pull_down_right</item>
