@@ -462,7 +462,7 @@ fun NonRootScreen() {
 									text = "★ BOOTLEGGERS ★",
 									color = MaterialTheme.colorScheme.onPrimary,
 									fontWeight = FontWeight.Black,
-									letterSpacing = androidx.compose.ui.unit.sp(1.5f),
+									letterSpacing = 1.5.sp,
 									style = MaterialTheme.typography.titleMedium,
 								)
 							}
